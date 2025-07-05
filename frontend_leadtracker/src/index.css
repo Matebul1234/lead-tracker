@@ -1,0 +1,33 @@
+
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Importing Tailwind */
+/* @import "tailwindcss"; */
+
+* {
+  /* font-family: "Monserrat", sans-serif; */
+  font-family: "IBM Plex Sans", sans-serif;
+  font-style: normal;
+  
+}
+
+/* Modern Gradient Background */
+body {
+  /* background: linear-gradient(135deg, #20028b, #0d0179, #0f5c7a); */
+  background-size: 400% 400%;
+  animation: gradientBG 10s ease infinite;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(90deg, #0240af, #021968);
+}
+
+/* Smooth Gradient Animation */
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+

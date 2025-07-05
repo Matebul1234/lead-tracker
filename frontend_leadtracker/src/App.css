@@ -1,0 +1,23 @@
+/* Ensure the body and root take full height */
+html, body, #root {
+ height: 100%;
+ margin: 0;
+ padding: 0;
+ color: white;
+  background: linear-gradient(90deg, #0240af, #021968);
+}
+
+/* Flex layout for the app */
+#root {
+ display: flex;
+ flex-direction: column;
+ min-height: 100vh;
+}
+
+.min-h-screen {
+ min-height: calc(100vh - 2px); 
+}
+
+.pt-16 {
+ padding-top: 64px; /* Ensure content is below fixed navbar */
+}

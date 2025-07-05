@@ -1,0 +1,87 @@
+.customeNavbar{
+  gap: 1.5rem;
+  letter-spacing: 2px;
+}
+
+.customeNavbar li a {
+  position: relative;
+  display: inline-block;
+  padding: 5px 15px; 
+  font-size: 18px;
+  font-weight: 1000 !important;
+  text-transform: uppercase;
+  /* color: #272b74 !important; Default color */
+  color: #fff;
+  transition: width 0.3s ease-in-out;
+  letter-spacing: 2px;
+  
+}
+.customeNavbar li Link {
+  font-size: 18px;
+  font-weight: 1000 !important;
+}
+
+.customeNavbar li a:hover {
+  /* color: #272b74 !important; Same color on hover */
+  color: #fff;
+  /* transform: scale(1.1);  */
+}
+
+.customeNavbar li a::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 3px;
+  background-color: #f7e22aef; 
+  transition: width 0.3s ease-in-out;
+}
+
+.customeNavbar li a:hover::after {
+  width: 100%;
+}
+
+/* Dropdown Items */
+.dropdownItems li a {
+  color: #fff;
+  white-space: nowrap;
+  display: block; 
+  font-size: 14px;
+  font-weight: 1000;
+  text-transform: uppercase;
+}
+
+.dropdownItems li a:hover {
+  background-color: #272b74 ; 
+  color: #fff !important; 
+}
+
+.dropdownservices {
+  font-size: 14px;
+  font-weight: 1000;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.dropdownservices:hover {
+  color: #fff;
+}
+
+/* Mobile specific */
+.mobileScriptItem li a:hover {
+  color: #fff !important;
+  /* transform: scale(1); */
+}
+
+.mobileScriptItem li a::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 3px;
+  background-color: #272b74;
+  margin-top: 8px; 
+  transition: width 0.3s ease-in-out;
+}
+
+.mobileScriptItem li a:hover::after {
+  width: 100%;
+}
