@@ -24,9 +24,9 @@ const Dashboard = () => {
   };
 
   const cards = [
-    { icon: <Heart size={25} />, count: 0, title: 'My Favourites' ,redirectLink:'/total-leads' },
+    { icon: <Heart size={25} />, count: 0, title: 'My Favourites' ,redirectLink:'/leads' },
     { icon: <CalendarHeart size={25} />, count: 0, title: 'Today Leads' ,redirectLink:'/' },
-    { icon: <Calendar size={25} />, count:`${allLead.length}`, title: 'Total Leads' ,redirectLink:'/total-leads' },
+    { icon: <Calendar size={25} />, count:`${allLead.length}`, title: 'Total Leads' ,redirectLink:'/leads' },
     { icon: <User size={25} />, count: 0, title: 'Today Walk-In' ,redirectLink:'/' },
     { icon: <Calendar size={25} />, count: 0, title: 'Missed Follow up' ,redirectLink:'/' },
     { icon: <Calendar size={25} />, count: 0, title: 'Today assigned leads' ,redirectLink:'/' },

@@ -83,9 +83,10 @@ const LeadForm = ({ onSuccess, leadData }) => {
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.name.trim()) newErrors.name = 'Name is required';
-    if (!formData.email.trim()) newErrors.email = 'Email is required';
-    if (!phone) newErrors.phone = 'Phone number is required';
+    if (!formData.name.trim()) newErrors.name = 'Name is Required';
+    if (!formData.industry_type.trim()) newErrors.industry_type = 'Industry Type is Required';
+     if (!formData.company_name.trim()) newErrors.company_name = 'Company Name is Required';
+    if (!phone) newErrors.phone = 'Phone Number is Required';
     return newErrors;
   };
 
@@ -260,7 +261,7 @@ const LeadForm = ({ onSuccess, leadData }) => {
             {/* Name & Email */}
             <div className="row">
               <div className="col-md-6 mb-2">
-                <label className="form-label">Full Name</label>
+                <label className="form-label fw-bold ">Full Name*</label>
                 <input
                   name="name"
                   type="text"
@@ -272,7 +273,7 @@ const LeadForm = ({ onSuccess, leadData }) => {
                 {errors.name && <div className="invalid-feedback">{errors.name}</div>}
               </div>
               <div className="col-md-6 mb-2">
-                <label className="form-label">Email</label>
+                <label className="form-label fw-bold">Email</label>
                 <input
                   name="email"
                   type="email"
@@ -281,14 +282,14 @@ const LeadForm = ({ onSuccess, leadData }) => {
                   onChange={handleChange}
                   placeholder="Enter email"
                 />
-                {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+               
               </div>
             </div>
 
             {/* Phone & Company Name */}
             <div className="row mb-3">
               <div className="col-md-6 mb-2">
-                <label className="form-label">Phone Number</label>
+                <label className="form-label fw-bold">Phone Number*</label>
                 <PhoneInput
                   international
                   defaultCountry="IN"
@@ -300,7 +301,7 @@ const LeadForm = ({ onSuccess, leadData }) => {
                 {errors.phone && <div className="invalid-feedback d-block">{errors.phone}</div>}
               </div>
               <div className="col-md-6 mb-2">
-                <label className="form-label">Company Name</label>
+                <label className="form-label fw-bold">Company Name*</label>
                 <input
                   name="company_name"
                   type="text"
@@ -310,12 +311,13 @@ const LeadForm = ({ onSuccess, leadData }) => {
                   placeholder="Enter company name"
                 />
               </div>
+               {errors.company_name && <div className="invalid-feedback">{errors.company_name}</div>}
             </div>
 
             {/* Country, State, City */}
             <div className="row mb-3">
               <div className="col-md-4 mb-2">
-                <label className="form-label">Country</label>
+                <label className="form-label fw-bold">Country</label>
                 <select
                   name="country"
                   className="form-control"
@@ -331,7 +333,7 @@ const LeadForm = ({ onSuccess, leadData }) => {
                 </select>
               </div>
               <div className="col-md-4 mb-2">
-                <label className="form-label">State</label>
+                <label className="form-label fw-bold">State</label>
                 <select
                   name="state"
                   className="form-control"
@@ -346,7 +348,7 @@ const LeadForm = ({ onSuccess, leadData }) => {
                 </select>
               </div>
               <div className="col-md-4 mb-2">
-                <label className="form-label">City</label>
+                <label className="form-label fw-bold">City</label>
                 <select
                   name="city"
                   className="form-control"
@@ -364,7 +366,7 @@ const LeadForm = ({ onSuccess, leadData }) => {
 
             {/* Website Link */}
             <div className="mb-3">
-              <label className="form-label">Website Link</label>
+              <label className="form-label fw-bold">Website Link</label>
               <input
                 name="website_link"
                 type="text"
@@ -378,7 +380,7 @@ const LeadForm = ({ onSuccess, leadData }) => {
             {/* Industry Type & Lead Status */}
             <div className="row mb-3">
               <div className="col-md-6 mb-2">
-                <label className="form-label">Industry Type</label>
+                <label className="form-label fw-bold">Industry Type*</label>
                 <select
                   name="industry_type"
                   className="form-control"
@@ -397,9 +399,10 @@ const LeadForm = ({ onSuccess, leadData }) => {
                   <option value="Government / Public Sector">Government / Public Sector</option>
                   <option value="Media & Entertainment">Media & Entertainment</option>
                 </select>
+                {errors.industry_type && <div className="invalid-feedback d-block">{errors.industry_type}</div>}
               </div>
               <div className="col-md-6 mb-2">
-                <label className="form-label">Lead Status</label>
+                <label className="form-label fw-bold">Lead Status</label>
                 <select
                   name="lead_status"
                   className="form-control"
@@ -422,7 +425,7 @@ const LeadForm = ({ onSuccess, leadData }) => {
             {/* Lead Owner & Date */}
             <div className="row mb-3">
               <div className="col-md-6 mb-2">
-                <label className="form-label">Lead Owner</label>
+                <label className="form-label fw-bold">Lead Owner</label>
                 <input
                   name="lead_owner"
                   type="text"
@@ -434,11 +437,12 @@ const LeadForm = ({ onSuccess, leadData }) => {
               </div>
               <div className="col-md-6 mb-2">
                 <div className="d-flex flex-column">
-                  <label className="form-label">Date</label>
+                  <label className="form-label fw-bold">Date</label>
                   <DatePicker
                     selected={selectedDate}
                     onChange={(date) => setSelectedDate(date)}
-                    dateFormat="yyyy-MM-dd"
+                    placeholderText='dd-MM-yyyy'
+                    dateFormat="dd-MM-yyyy"
                     className="form-control"
                   />
                 </div>
@@ -447,7 +451,7 @@ const LeadForm = ({ onSuccess, leadData }) => {
 
             {/* Description */}
             <div className="mb-3">
-              <label className="form-label">Description</label>
+              <label className="form-label fw-bold">Description</label>
               <textarea
                 name="description"
                 rows="3"

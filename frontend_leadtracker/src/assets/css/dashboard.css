@@ -133,3 +133,6 @@
   font-weight: 500;
 }
 
+.p-datatable .p-datatable-scrollable-body {
+  overflow-y: auto;
+}

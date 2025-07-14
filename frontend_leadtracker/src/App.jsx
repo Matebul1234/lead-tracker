@@ -15,6 +15,7 @@ import TotalLead from "./components/TotalLead.jsx";
 import LeadForm from "./components/LeadForm.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import NotFound404 from "./NotFound404.jsx";
+import AdvancedFilterDemo from "./components/AdvancedFilterDemo.jsx";
 
 
 
@@ -24,7 +25,7 @@ function App() {
       <ScrollToTop />
       <Navbar />
       {/* Main content area */}
-      <div className="flex flex-col">
+      <div className="flex flex-col justify-content-center">
         <div className="flex-grow" style={{marginTop:"84px"}}>
           <Routes>
 
@@ -46,6 +47,14 @@ function App() {
               </ProtectedRoute>
               }/>
             <Route path="/leadform" element={<LeadForm/>}/>
+
+
+            <Route path="/leads" element={
+              <ProtectedRoute>
+
+                <AdvancedFilterDemo/>
+              </ProtectedRoute>
+              }/>
 
           </Routes>
         </div>

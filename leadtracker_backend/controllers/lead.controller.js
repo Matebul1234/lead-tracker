@@ -42,7 +42,7 @@ export const addLead = async (req, res) => {
 
     return res.status(201).json({ 
       message: 'Lead added successfully', 
-      leadId: result.insertId 
+      leadId: result.insertId   
     });
 
   } catch (error) {

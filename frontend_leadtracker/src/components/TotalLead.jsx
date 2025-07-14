@@ -228,7 +228,13 @@ const TotalLead = () => {
                           {lead.website_link}
                         </a>
                       </td>
-                      <td>{lead.Date ? new Date(lead.Date).toISOString().slice(0, 10) : ''}</td>
+                      {/* <td>{lead.Date ? new Date(lead.Date).toISOString().slice(0, 10) : ''}</td> */}
+                      <td>
+                        {lead.Date
+                          ? new Date(lead.Date).toLocaleDateString('en-GB') // 'en-GB' gives dd/mm/yyyy
+                          : ''}
+                      </td>
+
                       <td>{lead.description}</td>
                       <td>
                         <div className="d-flex gap-1">
@@ -247,9 +253,6 @@ const TotalLead = () => {
 
               </table>
             </div>
-
-
-
           </div>
         </div>
       </div>
