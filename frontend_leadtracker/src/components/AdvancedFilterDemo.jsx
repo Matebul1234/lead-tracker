@@ -115,6 +115,12 @@ export default function UserLeadsTable() {
     setFilteredUserLead(filterLeads(query, userbasedLead));
   };
 
+  /// download in pdf files
+  const handleDownload = (lead) => {
+    console.log(lead);
+    
+  }
+
   const actionBodyTemplate = (rowData) => {
     return (
       <div className="d-flex gap-2">
@@ -131,6 +137,7 @@ export default function UserLeadsTable() {
 
           disabled={role !== 'admin'}
         />
+        <Button icon="pi pi-arrow-down" className="p-button-sm p-button-text" onClick={() => handleDownload(rowData)} /> 
       </div>
     );
   };
@@ -229,7 +236,7 @@ export default function UserLeadsTable() {
             placeholder="Search leads..."
           />
         </IconField>
-        <Button icon="pi pi-plus" onClick={addNewLead} tooltip="Add Lead" />
+        {/* <Button icon="pi pi-plus" onClick={addNewLead} tooltip="Add Lead" /> */}
       </div>
     </div>
   );
@@ -341,6 +348,7 @@ export default function UserLeadsTable() {
               <Column
                 field="Date"
                 header="Date"
+                sortable
                 body={(rowData) => formatDate(rowData.Date)}
                 style={{ minWidth: '10rem' }}
               />
