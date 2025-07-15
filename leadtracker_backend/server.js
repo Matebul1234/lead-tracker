@@ -10,9 +10,7 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-// cors
-
-
+// cors error handles
 const allowedOrigins = ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:3002','http://192.168.2.34:3002','http://10.1.1.36:3002'];
 
 app.use(cors({
