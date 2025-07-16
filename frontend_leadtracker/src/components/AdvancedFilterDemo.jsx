@@ -118,7 +118,7 @@ export default function UserLeadsTable() {
   /// download in pdf files
   const handleDownload = (lead) => {
     console.log(lead);
-    
+
   }
 
   const actionBodyTemplate = (rowData) => {
@@ -126,18 +126,18 @@ export default function UserLeadsTable() {
       <div className="d-flex gap-2">
         <Button
           icon="pi pi-pencil"
-          className="p-button-sm p-button-text"
+          className="edit-button p-button-sm p-button-text "
           onClick={() => handleEdit(rowData)}
 
         />
         <Button
           icon="pi pi-trash"
-          className="p-button-sm p-button-danger p-button-text"
+          className="delete-button p-button-sm p-button-danger p-button-text"
           onClick={() => handleDelete(rowData.id)}
 
           disabled={role !== 'admin'}
         />
-        <Button icon="pi pi-arrow-down" className="p-button-sm p-button-text" onClick={() => handleDownload(rowData)} /> 
+        {/* <Button icon="pi pi-arrow-down" className="p-button-sm p-button-text" onClick={() => handleDownload(rowData)} /> */}
       </div>
     );
   };
@@ -157,8 +157,8 @@ export default function UserLeadsTable() {
     // console.log(response.data, "user based lead");
 
 
-    // Filter leads added today
-    const leadsAddedToday = response.data.filter(lead => isToday(lead.Date));
+  // Filter leads added today
+  const leadsAddedToday = response.data.filter(lead => isToday(lead.Date));
     // setTodayUserLeads(leadsAddedToday);
     setTodayAllLeads(leadsAddedToday);
     // console.log(leadsAddedToday, "Today's user-based leads");
@@ -218,7 +218,7 @@ export default function UserLeadsTable() {
   };
 
   // INSIDE your component
-  const header = (
+ const header = (
     <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
       <Button
         type="button"
@@ -236,7 +236,7 @@ export default function UserLeadsTable() {
             placeholder="Search leads..."
           />
         </IconField>
-        {/* <Button icon="pi pi-plus" onClick={addNewLead} tooltip="Add Lead" /> */}
+        <Button icon="pi pi-plus" onClick={addNewLead}  />
       </div>
     </div>
   );
@@ -322,58 +322,58 @@ export default function UserLeadsTable() {
                 className="p-datatable-sm p-datatable-bordered"
               >
 
-              <Column field="name" header="Name" sortable style={{ minWidth: '12rem' }} />
-              <Column field="email" header="Email" sortable style={{ minWidth: '12rem' }} />
-              <Column field="phone" header="Phone" sortable style={{ minWidth: '10rem' }} />
-              <Column field="company_name" header="Company" sortable style={{ minWidth: '14rem' }} />
-              <Column field="industry_type" header="Industry" sortable style={{ minWidth: '12rem' }} />
-              <Column field="country" header="Country" sortable style={{ minWidth: '10rem' }} />
-              <Column field="state" header="State" sortable style={{ minWidth: '10rem' }} />
-              <Column field="lead_owner" header="Lead Owner" sortable style={{ minWidth: '10rem' }} />
-              <Column
-                field="lead_status"
-                header="Status"
-                body={statusBodyTemplate}
-                style={{ minWidth: '10rem' }}
-              />
-              <Column field="city" header="City" sortable style={{ minWidth: '10rem' }} />
-              <Column
-                field="website_link"
-                header="Website"
-                style={{ minWidth: '14rem' }}
-                body={(rowData) => (
-                  <a href={rowData.website_link} target="_blank" rel="noreferrer">{rowData.website_link}</a>
-                )}
-              />
-              <Column
-                field="Date"
-                header="Date"
-                sortable
-                body={(rowData) => formatDate(rowData.Date)}
-                style={{ minWidth: '10rem' }}
-              />
-              <Column field="description" header="Description" style={{ minWidth: '16rem' }} />
-              <Column
-                header="Actions"
-                body={actionBodyTemplate}
-                style={{ minWidth: '8rem', textAlign: 'center' }}
-              />
-            </DataTable>
+                <Column field="name" header="Name" sortable style={{ minWidth: '12rem' }} />
+                <Column field="email" header="Email" sortable style={{ minWidth: '12rem' }} />
+                <Column field="phone" header="Phone" sortable style={{ minWidth: '10rem' }} />
+                <Column field="company_name" header="Company" sortable style={{ minWidth: '14rem' }} />
+                <Column field="industry_type" header="Industry" sortable style={{ minWidth: '12rem' }} />
+                <Column field="country" header="Country" sortable style={{ minWidth: '10rem' }} />
+                <Column field="state" header="State" sortable style={{ minWidth: '10rem' }} />
+                <Column field="lead_owner" header="Lead Owner" sortable style={{ minWidth: '10rem' }} />
+                <Column
+                  field="lead_status"
+                  header="Status"
+                  body={statusBodyTemplate}
+                  style={{ minWidth: '10rem' }}
+                />
+                <Column field="city" header="City" sortable style={{ minWidth: '10rem' }} />
+                <Column
+                  field="website_link"
+                  header="Website"
+                  style={{ minWidth: '14rem' }}
+                  body={(rowData) => (
+                    <a href={rowData.website_link} target="_blank" rel="noreferrer">{rowData.website_link}</a>
+                  )}
+                />
+                <Column
+                  field="Date"
+                  header="Date"
+                  sortable
+                  body={(rowData) => formatDate(rowData.Date)}
+                  style={{ minWidth: '10rem' }}
+                />
+                <Column field="description" header="Description" style={{ minWidth: '16rem' }} />
+                <Column
+                  header="Actions"
+                  body={actionBodyTemplate}
+                  style={{ minWidth: '8rem', textAlign: 'center' }}
+                />
+              </DataTable>
+            </div>
           </div>
         </div>
-      </div>
-    </div >
+      </div >
 
-      {/* Dialog box */ }
+      {/* Dialog box */}
       < Dialog
-  header = "Add Lead"
-  visible = { visible }
-  maximizable
-  style = {{ width: window.innerWidth < 768 ? '95vw' : '50vw' }
-}
-onHide = {() => setVisible(false)}
+        header="Add Lead"
+        visible={visible}
+        maximizable
+        style={{ width: window.innerWidth < 768 ? '95vw' : '50vw' }
+        }
+        onHide={() => setVisible(false)}
       >
-  <LeadForm onSuccess={handleAddSuccess} leadData={selectedLead} />
+        <LeadForm onSuccess={handleAddSuccess} leadData={selectedLead} />
       </Dialog >
     </>
   );

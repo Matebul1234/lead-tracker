@@ -1,0 +1,25 @@
+.custom-datatable .p-datatable-tbody > tr {
+  border-bottom: 1px solid #ddd;  
+}
+
+.custom-datatable .p-datatable-tbody > td {
+  border: 1px solid #ddd;  
+}
+
+.add-button:hover{
+ background-color: #309ee7 !important;
+ color: white;
+ border-radius: 10px;
+}
+.edit-button:hover{
+ background-color: #e2bf24 !important;
+ color: white;
+ border-radius: 10px;
+}
+
+.delete-button:hover{
+ background-color: #bd0f0f !important;
+ color: white;
+ border-radius: 10px;
+}
+

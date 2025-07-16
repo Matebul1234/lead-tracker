@@ -16,6 +16,7 @@ import LeadForm from "./components/LeadForm.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import NotFound404 from "./NotFound404.jsx";
 import AdvancedFilterDemo from "./components/AdvancedFilterDemo.jsx";
+import Quotation_data_table from "./components/quotation/Quotation_data_table.jsx";
 
 
 
@@ -48,13 +49,17 @@ function App() {
               }/>
             <Route path="/leadform" element={<LeadForm/>}/>
 
-
             <Route path="/leads" element={
               <ProtectedRoute>
-
                 <AdvancedFilterDemo/>
               </ProtectedRoute>
               }/>
+            
+            <Route path="/ns3tech/quotation" element={
+              <ProtectedRoute>
+                <Quotation_data_table/>
+              </ProtectedRoute>
+            }/>
 
           </Routes>
         </div>

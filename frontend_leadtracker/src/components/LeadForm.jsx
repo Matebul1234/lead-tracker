@@ -7,9 +7,12 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Toast } from 'primereact/toast';
 import { Country, State, City } from 'country-state-city';
 
-const useremail = localStorage.getItem('useremail');
 
 const LeadForm = ({ onSuccess, leadData }) => {
+  const useremail = localStorage.getItem('useremail');
+
+  // console.log(useremail,"useremail in lead form")
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -114,6 +117,7 @@ const LeadForm = ({ onSuccess, leadData }) => {
       if (leadData) {
         // update existing lead /update-lead/:id
         await axios.put(`${API_URL}/api/lead/update-lead/${leadData.id}`, payload);
+        // onSuccess();
         toast.current?.show({
           severity: 'success',
           summary: 'Success',
@@ -123,6 +127,7 @@ const LeadForm = ({ onSuccess, leadData }) => {
       } else {
         // add new lead
         await axios.post(`${API_URL}/api/lead/add-lead`, payload);
+        // onSuccess();
         toast.current?.show({
           severity: 'success',
           summary: 'Success',
@@ -209,6 +214,7 @@ const LeadForm = ({ onSuccess, leadData }) => {
     }
   }, [leadData]);
 
+// fetch data in refresh
 
   // for state patch
   // Load states when country changes
