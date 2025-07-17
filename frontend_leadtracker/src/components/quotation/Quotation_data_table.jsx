@@ -3,14 +3,39 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import '../../assets/css/quotation.css';
 import { Button } from 'primereact/button';
+import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL;
 const Quotation_data_table = () => {
+
  const [visible, setVisible] = useState(false);
  const [products, setProducts] = useState([
   { code: 'P001', name: 'Small Widget', category: 'Size', quantity: 10 },
   { code: 'P002', name: 'Normal Widget', category: 'Size', quantity: 20 },
   { code: 'P003', name: 'Large Widget', category: 'Size', quantity: 15 }
  ]);
+
+
+   const getLeadsbyemail = async () => {
+    setTodayAllLeads([]);
+    const useremail = localStorage.getItem('useremail');
+    const response = await axios.post(`${API_URL}/api/lead/get-lead-by-email`, { email: useremail });
+  //   setuserbasedLead(response.data);
+  //   // console.log(response.data, "user based lead");
+
+
+  // // Filter leads added today
+  // const leadsAddedToday = response.data.filter(lead => isToday(lead.Date));
+  //   // setTodayUserLeads(leadsAddedToday);
+  //   setTodayAllLeads(leadsAddedToday);
+  //   // console.log(leadsAddedToday, "Today's user-based leads");
+  };
+
+ 
+  const handleAddSuccess = () => {
+    setVisible(false);
+    getLeadsbyemail();
+  };
 
  const actionBodyTemplate = (rowData) => {
   return (
@@ -51,6 +76,17 @@ const Quotation_data_table = () => {
     </DataTable>
 
    </div>
+
+     < Dialog
+        header="Add Lead"
+        visible={visible}
+        maximizable
+        style={{ width: window.innerWidth < 768 ? '95vw' : '50vw' }
+        }
+        onHide={() => setVisible(false)}
+      >
+        <LeadForm onSuccess={handleAddSuccess} leadData={selectedLead} />
+      </Dialog >
   </>
  );
 }

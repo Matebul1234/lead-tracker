@@ -1,4 +1,4 @@
-import connection from "../models/db.js";
+import pol from "../models/db.js";
 
 
 // add leads
@@ -17,7 +17,7 @@ export const addLead = async (req, res) => {
       SELECT * FROM marketingleads 
       WHERE (email = ? AND company_name = ?) OR phone = ?
     `;
-    const [existingLeads] = await connection.promise().execute(checkSql, [email, company_name, phone]);
+    const [existingLeads] = await pol.promise().execute(checkSql, [email, company_name, phone]);
 
     if (existingLeads.length > 0) {
       return res.status(409).json({ message: 'Duplicate lead: lead already exists' });
@@ -38,7 +38,7 @@ export const addLead = async (req, res) => {
       description, useremail
     ];
 
-    const [result] = await connection.promise().execute(insertSql, values);
+    const [result] = await pol.promise().execute(insertSql, values);
 
     return res.status(201).json({ 
       message: 'Lead added successfully', 
@@ -57,7 +57,7 @@ export const addLead = async (req, res) => {
 export const getAllLeads = async (req, res) => {
 
   try {
-    const [rows] = await connection.promise().query('SELECT * FROM marketingleads ORDER BY id DESC');
+    const [rows] = await pol.promise().query('SELECT * FROM marketingleads ORDER BY id DESC');
     res.json(rows);
   } catch (error) {
     console.error('Error fetching leads:', error);
@@ -71,7 +71,7 @@ export const getLeadbyEmail = async (req, res) => {
     const { email } = req.body;
     if (!email) return res.status(400).json({ message: 'Email is required' });
 
-    const [rows] = await connection.promise().query('SELECT * FROM marketingleads WHERE useremail = ?', [email]);
+    const [rows] = await pol.promise().query('SELECT * FROM marketingleads WHERE useremail = ?', [email]);
     res.json(rows);
   } catch (error) {
     console.error('Error fetching lead by email:', error);
@@ -98,7 +98,7 @@ export const updateLead = async (req, res) => {
     values.push(id); // for WHERE id = ?
 
     const sql = `UPDATE marketingleads SET ${updates.join(', ')} WHERE id = ?`;
-    await connection.promise().execute(sql, values);
+    await pol.promise().execute(sql, values);
 
     res.json({ message: 'Lead updated successfully' });
   } catch (error) {
@@ -115,7 +115,7 @@ export const deleteLeadbyId = async (req, res) => {
     console.log("Deleting lead with ID:", id);
     if (!id) return res.status(400).json({ message: 'Lead ID is required' });
 
-    await connection.promise().execute('DELETE FROM marketingleads WHERE id = ?', [id]);
+    await pol.promise().execute('DELETE FROM marketingleads WHERE id = ?', [id]);
 
     res.json({ message: 'Lead deleted successfully' });
   } catch (error) {
