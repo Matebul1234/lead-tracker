@@ -1,43 +1,49 @@
 import jwt from 'jsonwebtoken';
 
-const auth = async (request, response, next) => {
-    console.log("middleware triggered ====>", request);
+const auth = async (req, res, next) => {
+  try {
+    console.log("🔐 Auth middleware triggered");
 
-    try {
-        // Get token from cookies or Authorization header
-        const token = request.accesstoken|| request?.headers?.authorization?.split(" ")[1];
-        console.log("Token received:", token);
+    const token = req.cookies?.accessToken || req.headers?.authorization?.split(' ')[1];
 
-        if (!token) {
-            return response.status(401).json({
-                message: "Provide token"
-            });
-        }
-
-        // Verify the access token
-        const decode = await jwt.verify(token, process.env.SECRET_KEY_ACCESS_TOKEN);
-        console.log("Token decoded:", decode);
-
-        if (!decode) {
-            return response.status(401).json({
-                message: "Unauthorized access",
-                error: true,
-                success: false
-            });
-        }
-
-        // Pass user id to the request object for further use
-        request.userId = decode.id;
-
-        next();
-    } catch (error) {
-        console.error("Token verification error:", error);
-        return response.status(500).json({
-            message: error.message || 'Error occurred during token verification.',
-            error: true,
-            success: false
-        });
+    if (!token) {
+      return res.status(401).json({
+        message: "Access token not found. Unauthorized",
+        error: true,
+        success: false
+      });
     }
-}
+
+    const decoded = jwt.verify(token, process.env.SECRET_KEY_ACCESS_TOKEN);
+
+    if (!decoded?.id) {
+      return res.status(401).json({
+        message: "Invalid token",
+        error: true,
+        success: false
+      });
+    }
+
+    req.userId = decoded.id;
+    next();
+
+  } catch (error) {
+    console.error("❌ Token verification error:", error.message);
+
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({
+        message: "Token expired",
+        error: true,
+        success: false
+      });
+    }
+
+    return res.status(500).json({
+      message: error.message || "Token verification failed",
+      error: true,
+      success: false
+    });
+  }
+};
 
 export default auth;

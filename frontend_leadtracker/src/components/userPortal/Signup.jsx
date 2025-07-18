@@ -60,7 +60,7 @@ const Signup = () => {
   };
 
   const handleSubmit = async (e) => {
-    debugger;
+
     e.preventDefault();
 
     if (!validate()) return;

@@ -2,7 +2,7 @@ import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const pool = mysql.createPool({
+const connection = mysql.createPool({
   host: process.env.HOST,
   user: process.env.USER_NAME,
   password: process.env.DB_PASSWORD,
@@ -12,4 +12,5 @@ const pool = mysql.createPool({
   queueLimit: 0
 });
 
-export default pool;
+export default connection;
+
