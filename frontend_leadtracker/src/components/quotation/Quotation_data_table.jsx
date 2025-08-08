@@ -4,6 +4,9 @@ import { Column } from 'primereact/column';
 import '../../assets/css/quotation.css';
 import { Button } from 'primereact/button';
 import axios from 'axios';
+import { Dialog } from 'primereact/dialog';
+import LeadForm from '../LeadForm';
+import QuatationForm from './Quotation_form';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const Quotation_data_table = () => {
@@ -15,6 +18,7 @@ const Quotation_data_table = () => {
   { code: 'P003', name: 'Large Widget', category: 'Size', quantity: 15 }
  ]);
 
+   const [selectedLead, setSelectedLead] = useState(null);
 
    const getLeadsbyemail = async () => {
     setTodayAllLeads([]);
@@ -52,17 +56,18 @@ const Quotation_data_table = () => {
 
     // disabled={role !== 'admin'}
     />
-    <Button icon="pi pi-plus" className="p-button-sm p-button-text add-button"
-    // onClick={() => handleDownload(rowData)}
-    />
+ 
    </div>
   );
  };
 
  return (
   <>
-   <div className="py-3 px-4">
+   <div className="py-3 px-4 d-flex justify-content-between">
     <h1>Ns3TechSolutions Quotations</h1>
+       <Button icon="pi pi-plus" label='Add' iconPos="right" pla className="p-button-sm p-button-text add-button text-white shadow-lg bg-orange-500"
+    onClick={() => setVisible(true)}
+    />
    </div>
    <div className="card">
     <DataTable value={products} stripedRows showGridlines
@@ -78,14 +83,15 @@ const Quotation_data_table = () => {
    </div>
 
      < Dialog
-        header="Add Lead"
+        header="Add Quotation"
         visible={visible}
         maximizable
         style={{ width: window.innerWidth < 768 ? '95vw' : '50vw' }
         }
         onHide={() => setVisible(false)}
       >
-        <LeadForm onSuccess={handleAddSuccess} leadData={selectedLead} />
+        {/* <LeadForm onSuccess={handleAddSuccess} leadData={selectedLead} /> */}
+        <QuatationForm onSuccess={handleAddSuccess} leadData={selectedLead}/>
       </Dialog >
   </>
  );

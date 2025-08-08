@@ -88,21 +88,43 @@ export default function UserLeadsTable() {
     return new Date(value).toLocaleDateString('en-GB'); // dd/mm/yyyy
   };
 
+  // const getSeverity = (status) => {
+  //   switch (status?.toLowerCase()) {
+  //     case 'pending':
+  //       return 'warning';
+  //     case 'new':
+  //       return 'info';
+  //     case 'contacted':
+  //       return 'success';
+  //     case 'closed':
+  //       return 'danger';
+  //     default:
+  //       return null;
+  //   }
+  // };
+
   const getSeverity = (status) => {
     switch (status?.toLowerCase()) {
       case 'pending':
         return 'warning';
-      case 'new':
+      case 'Follow up':
         return 'info';
-      case 'contacted':
-        return 'success';
+      case 'DNP- Did not pick':
+        return 'danger';
       case 'closed':
         return 'danger';
+      case 'Completed':
+        return 'success';
+      case 'Proposal Sent':
+        return 'red';
+      case 'Negotiation':
+        return 'orange';
+      case 'Payment Follow up':
+        return 'Green';
       default:
         return null;
     }
   };
-
   const statusBodyTemplate = (rowData) => {
     return <Tag value={rowData.lead_status} severity={getSeverity(rowData.lead_status)} />;
   };

@@ -10,39 +10,70 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 const API_URL = import.meta.env.VITE_API_URL;
 
+const userrole = localStorage.getItem('userrole');
+const email = localStorage.getItem('useremail');
+
 const Dashboard = () => {
+
   const [showSidebar, setShowSidebar] = useState(false);
   const navigate = useNavigate();
-    const [allLead, setallLead] = useState([]);
+  const [allLead, setallLead] = useState([]);
+  const [todayAllLeads, setTodayAllLeads] = useState([]);
   
 
-   // Fetch all leads
+
+  // Fetch all leads
   const fetchalldata = async () => {
-    const response = await axios.get(`${API_URL}/api/lead/get-allleads`);
-    setallLead(response.data);
-    // console.log(response.data, "all data of leads====", allLead);
+
+    if (userrole !== 'admin') {
+      setallLead([]);
+      const response = await axios.post(`${API_URL}/api/lead/get-lead-by-email`, { email });
+      setallLead(response.data);
+      // console.log("all data of leads====", allLead);
+
+      const leadsAddedToday = response.data.filter(lead => isToday(lead.Date));
+      setTodayAllLeads(leadsAddedToday);
+
+    } else {
+      const response = await axios.get(`${API_URL}/api/lead/get-allleads`);
+      setallLead(response.data);
+      // console.log("all data of leads====", allLead);
+      const leadsAddedToday = response.data.filter(lead => isToday(lead.Date));
+      setTodayAllLeads(leadsAddedToday);
+    }
   };
 
+  const isToday = (dateString) => {
+    const leadDate = new Date(dateString);
+    const today = new Date();
+
+    return (
+      leadDate.getFullYear() === today.getFullYear() &&
+      leadDate.getMonth() === today.getMonth() &&
+      leadDate.getDate() === today.getDate()
+    );
+  };
+  
   const cards = [
-    { icon: <Heart size={25} />, count: 0, title: 'My Favourites' ,redirectLink:'/leads' },
-    { icon: <CalendarHeart size={25} />, count: 0, title: 'Today Leads' ,redirectLink:'/' },
-    { icon: <Calendar size={25} />, count:`${allLead.length}`, title: 'Total Leads' ,redirectLink:'/leads' },
-    { icon: <User size={25} />, count: 0, title: 'Today Walk-In' ,redirectLink:'/' },
-    { icon: <Calendar size={25} />, count: 0, title: 'Missed Follow up' ,redirectLink:'/' },
-    { icon: <Calendar size={25} />, count: 0, title: 'Today assigned leads' ,redirectLink:'/' },
-    { icon: <Phone size={25} />, count: 0, title: 'Yesterday Call' ,redirectLink:'/' },
-    { icon: <Check size={25} />, count: 0, title: 'Completed Leads' ,redirectLink:'/' },
-    { icon: <X size={25} />, count: 0, title: 'Yesterday Untouched Leads' ,redirectLink:'/' },
+    { icon: <Heart size={25} />, count: 0, title: 'Quotation', redirectLink: '/ns3tech/quotation' },
+    { icon: <CalendarHeart size={25} />, count: `${todayAllLeads.length}`, title: 'Today Leads'},
+    { icon: <Calendar size={25} />, count: `${allLead.length}`, title: 'Total Leads', redirectLink: '/leads' },
+    { icon: <User size={25} />, count: 0, title: 'Today Walk-In', redirectLink: '/' },
+    { icon: <Calendar size={25} />, count: 0, title: 'Missed Follow up', redirectLink: '/' },
+    { icon: <Calendar size={25} />, count: 0, title: 'Today assigned leads', redirectLink: '/' },
+    { icon: <Phone size={25} />, count: 0, title: 'Yesterday Call', redirectLink: '/' },
+    { icon: <Check size={25} />, count: 0, title: 'Completed Leads', redirectLink: '/' },
+    { icon: <X size={25} />, count: 0, title: 'Yesterday Untouched Leads', redirectLink: '/' },
   ];
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchalldata();
-  },[]);
+  }, []);
 
 
 
   return (
-    <div className="container-fluid" style={{ backgroundColor: '#f3f8fe' }}>
+    <div className="container-fluid" >
       <div className="row flex-nowrap">
 
         <Sidebar showSidebar={showSidebar} />
@@ -73,7 +104,7 @@ const Dashboard = () => {
                     <h2 className="mb-1 text-underline">{card.count}</h2>
                     <h5 className='fw-bold'>{card.title}</h5>
                   </div>
-                  <button  className="btn button-bg-color btn-sm btn-view">View</button>
+                  <button className="btn button-bg-color btn-sm btn-view">View</button>
                 </div>
               </div>
             ))}

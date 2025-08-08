@@ -1,43 +1,123 @@
 import connection from "../models/db.js";
 
-// ✅ Add a new lead
+// // ✅ Add a new lead
+// export const addLead = async (req, res) => {
+//   console.log(req.body, "Received lead data");
+
+//   try {
+//     const {
+//       name, email, phone, customer, country, state, city,
+//       website_link, industry_type, lead_status, lead_owner, date,
+//       description, useremail
+//     } = req.body;
+
+//     const pool = await connection.getConnection();
+
+//     try {
+//       // Step 1: Check for duplicate leads
+//       const checkSql = `
+//         SELECT * FROM marketingleads 
+//         WHERE email = ? OR phone = ?
+//       `;
+//       const [existingLeads] = await pool.execute(checkSql, [email, phone]);
+
+//       if (existingLeads.length > 0) {
+//         return res.status(409).json({ message: 'Duplicate lead: lead already exists' });
+//       }
+
+//       // Step 2: Insert new lead
+//       const insertSql = `
+//         INSERT INTO marketingleads
+//         (name, email, phone, customer, country, state, city,
+//          website_link, industry_type, lead_status, lead_owner, date,
+//          description, useremail)
+//         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+//       `;
+
+//       const values = [
+//         name, email, phone, customer, country, state, city,
+//         website_link, industry_type, lead_status, lead_owner, date,
+//         description, useremail
+//       ];
+
+//       const [result] = await pool.execute(insertSql, values);
+
+//       return res.status(201).json({
+//         message: 'Lead added successfully',
+//         leadId: result.insertId
+//       });
+
+//     } finally {
+//       pool.release();
+//     }
+
+//   } catch (error) {
+//     console.error('Error adding lead:', error);
+//     return res.status(500).json({ message: 'Internal server error' });
+//   }
+// };
+
 export const addLead = async (req, res) => {
-  console.log(req.body, "Received lead data");
+  // console.log(req.body, "Received lead data");
 
   try {
     const {
-      name, email, phone, company_name, country, state, city,
-      website_link, industry_type, lead_status, lead_owner, date,
-      description, useremail
+      name,
+      email,
+      phone,
+      customer = null,
+      country = null,
+      state = null,
+      city = null,
+      website_link = null,
+      product = null,
+      industry_type = null,
+      lead_status = null,
+      lead_owner = null,
+      date = null,
+      description = null,
+      useremail = null
     } = req.body;
 
     const pool = await connection.getConnection();
 
     try {
       // Step 1: Check for duplicate leads
-      const checkSql = `
-        SELECT * FROM marketingleads 
-        WHERE (email = ? AND company_name = ?) OR phone = ?
-      `;
-      const [existingLeads] = await pool.execute(checkSql, [email, company_name, phone]);
+      // const checkSql = `
+      //   SELECT * FROM marketingleads 
+      //   WHERE email = ? OR phone = ?
+      // `;
+      // const [existingLeads] = await pool.execute(checkSql, [email, phone]);
 
-      if (existingLeads.length > 0) {
-        return res.status(409).json({ message: 'Duplicate lead: lead already exists' });
-      }
+      // if (existingLeads.length > 0) {
+      //   return res.status(409).json({ message: 'Duplicate lead: lead already exists' });
+      // }
 
       // Step 2: Insert new lead
       const insertSql = `
         INSERT INTO marketingleads
-        (name, email, phone, company_name, country, state, city,
-         website_link, industry_type, lead_status, lead_owner, date,
+        (name, email, phone, customer, country, state, city,
+         website_link,product, industry_type, lead_status, lead_owner, date,
          description, useremail)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)
       `;
 
       const values = [
-        name, email, phone, company_name, country, state, city,
-        website_link, industry_type, lead_status, lead_owner, date,
-        description, useremail
+        name,
+        email,
+        phone,
+        customer,
+        country,
+        state,
+        city,
+        website_link,
+        product,
+        industry_type,
+        lead_status,
+        lead_owner,
+        date,
+        description,
+        useremail
       ];
 
       const [result] = await pool.execute(insertSql, values);
@@ -56,6 +136,7 @@ export const addLead = async (req, res) => {
     return res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 // ✅ Get all leads
 export const getAllLeads = async (req, res) => {

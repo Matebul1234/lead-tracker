@@ -6,6 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Toast } from 'primereact/toast';
 import { Country, State, City } from 'country-state-city';
+import { Dialog } from 'primereact/dialog';
 
 
 const LeadForm = ({ onSuccess, leadData }) => {
@@ -16,11 +17,12 @@ const LeadForm = ({ onSuccess, leadData }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    company_name: '',
+    customer: '',
     country: '',
     state: '',
     city: '',
     website_link: '',
+    product: '',
     industry_type: '',
     lead_status: '',
     lead_owner: '',
@@ -38,6 +40,91 @@ const LeadForm = ({ onSuccess, leadData }) => {
 
   const API_URL = import.meta.env.VITE_API_URL;
   const toast = useRef(null);
+
+  // Customer meterials ==========================
+  const [customersData, setCustomersData] = useState([]);
+  const [openCustomer, setopenCustomer] = useState(false);
+
+  const [customerformData, setCustomerformdata] = useState({
+    customer: '',
+    company_name: '',
+    customer_website_link: ''
+  });
+
+  // form data take during the input user
+  const handleChangeCustomerForm = (e) => {
+    const { name, value } = e.target;
+    setCustomerformdata(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+
+  // Submit Customer form data
+  const handleCustomerSubmit = async (e) => {
+    e.preventDefault();
+    console.log(customerformData)
+
+    try {
+      const response = await axios.post(`${API_URL}/api/customer/add-customer`, customerformData);
+      console.log("API response:", response.data);
+
+      if (response.data.message === 'Customer added successfully') {
+        toast.current?.show({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Customer added successfully!',
+          life: 3000,
+        });
+
+        // Reset form
+        setCustomerformdata({
+          customer: '',
+          company_name: '',
+          customer_website_link: ''
+        });
+        getAllCustomers();
+
+        setopenCustomer(false);
+      } else {
+        // Handle unexpected failure
+        toast.current?.show({
+          severity: 'warn',
+          summary: 'Warning',
+          detail: response.data.message || 'Customer could not be added.',
+          life: 3000,
+        });
+      }
+
+    } catch (error) {
+      console.error("Error adding customer:", error);
+      toast.current?.show({
+        severity: 'error',
+        summary: 'Error',
+        detail: error?.response?.data?.message || 'Something went wrong!',
+        life: 3000,
+      });
+    }
+  };
+
+
+  const getAllCustomers = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/api/customer/get-all-customer`);
+      setCustomersData(response.data.rows);
+      // console.log(response.data.rows,"customers data",);
+
+    } catch (error) {
+      toast.current.show({ severity: 'error', summary: 'Error', detail: error.response, life: 3000 });
+    }
+  }
+
+  // get all customers data on page load
+  useEffect(() => { getAllCustomers(); }, []);
+
+
+  // customer ============================
 
 
   // Load countries on mount
@@ -88,12 +175,12 @@ const LeadForm = ({ onSuccess, leadData }) => {
     const newErrors = {};
     if (!formData.name.trim()) newErrors.name = 'Name is Required';
     if (!formData.industry_type.trim()) newErrors.industry_type = 'Industry Type is Required';
-     if (!formData.company_name.trim()) newErrors.company_name = 'Company Name is Required';
+    if (!formData.customer.trim()) newErrors.customer = 'Customer is Required';
     if (!phone) newErrors.phone = 'Phone Number is Required';
     return newErrors;
   };
 
-  
+
   /// test 
 
   const handleSubmit = async (e) => {
@@ -122,8 +209,9 @@ const LeadForm = ({ onSuccess, leadData }) => {
           severity: 'success',
           summary: 'Success',
           detail: 'Lead updated successfully!',
-          life: 3000,
+          life: 1000,
         });
+        
       } else {
         // add new lead
         await axios.post(`${API_URL}/api/lead/add-lead`, payload);
@@ -132,19 +220,23 @@ const LeadForm = ({ onSuccess, leadData }) => {
           severity: 'success',
           summary: 'Success',
           detail: 'Lead created successfully!',
-          life: 3000,
+          life: 1000,
         });
+       
       }
 
       // clear form
+
+      setTimeout(()=>{
       setFormData({
         name: '',
         email: '',
-        company_name: '',
+        customer: '',
         country: '',
         state: '',
         city: '',
         website_link: '',
+        product: '',
         industry_type: '',
         lead_status: '',
         lead_owner: '',
@@ -154,6 +246,7 @@ const LeadForm = ({ onSuccess, leadData }) => {
       setSelectedDate(new Date());
       setErrors({});
       onSuccess && onSuccess();
+      },1000);
 
     } catch (error) {
       console.error('Error:', error);
@@ -180,11 +273,12 @@ const LeadForm = ({ onSuccess, leadData }) => {
       setFormData({
         name: leadData.name || '',
         email: leadData.email || '',
-        company_name: leadData.company_name || '',
+        customer: leadData.customer || '',
         country: leadData.country || '',
         state: leadData.state || '',
         city: leadData.city || '',
         website_link: leadData.website_link || '',
+        product: leadData.product || '',
         industry_type: leadData.industry_type || '',
         lead_status: leadData.lead_status || '',
         lead_owner: leadData.lead_owner || '',
@@ -197,11 +291,12 @@ const LeadForm = ({ onSuccess, leadData }) => {
       setFormData({
         name: '',
         email: '',
-        company_name: '',
+        customer: '',
         country: '',
         state: '',
         city: '',
         website_link: '',
+        product: '',
         industry_type: '',
         lead_status: '',
         lead_owner: '',
@@ -214,7 +309,7 @@ const LeadForm = ({ onSuccess, leadData }) => {
     }
   }, [leadData]);
 
-// fetch data in refresh
+  // fetch data in refresh
 
   // for state patch
   // Load states when country changes
@@ -288,11 +383,11 @@ const LeadForm = ({ onSuccess, leadData }) => {
                   onChange={handleChange}
                   placeholder="Enter email"
                 />
-               
+
               </div>
             </div>
 
-            {/* Phone & Company Name */}
+            {/* Phone & Customer */}
             <div className="row mb-3">
               <div className="col-md-6 mb-2">
                 <label className="form-label fw-bold">Phone Number*</label>
@@ -306,18 +401,75 @@ const LeadForm = ({ onSuccess, leadData }) => {
                 />
                 {errors.phone && <div className="invalid-feedback d-block">{errors.phone}</div>}
               </div>
-              <div className="col-md-6 mb-2">
-                <label className="form-label fw-bold">Company Name*</label>
+              {/* <div className="col-md-6 mb-2">
+                <label className="form-label fw-bold">Customer*</label>
                 <input
-                  name="company_name"
+                  name="customer"
                   type="text"
                   className="form-control"
-                  value={formData.company_name}
+                  value={formData.customer}
                   onChange={handleChange}
-                  placeholder="Enter company name"
+                  placeholder="Enter Customer name"
                 />
               </div>
-               {errors.company_name && <div className="invalid-feedback">{errors.company_name}</div>}
+               {errors.customer && <div className="invalid-feedback">{errors.customer}</div>} */}
+              <div className="col-md-6 mb-2">
+                <label className="form-label fw-bold">Customer*</label>
+
+                {/* <select
+                  name="customer"
+                  className="form-control"
+                  value={formData.customer || ''}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === "__add_new__") {
+                      setopenCustomer(true);
+                      return;
+                    }
+                    handleChange(e);
+                  }}
+                >
+                  {customersData?.map((customer) => (
+                    <option value={customer.customer} key={customer.id} >{customer.customer}</option>
+                  ))}
+
+                  <option value="__add_new__">➕ Add New</option>
+                </select> */}
+
+
+                <select
+                  name="customer"
+                  className="form-control"
+                  value={formData.customer || ''}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === "__add_new__") {
+                      setopenCustomer(true);
+                      return;
+                    }
+                    handleChange(e);
+                  }}
+                >
+                  <option value="">-- Select Customer --</option>
+
+                  {customersData && customersData.length > 0 && (
+                    customersData.map((customer) => (
+                      <option value={customer.customer} key={customer.id}>
+                        {customer.customer}
+                      </option>
+                    ))
+                  )}
+
+                  <option value="__add_new__">➕ Add New</option>
+                </select>
+
+
+
+
+
+              </div>
+
+
             </div>
 
             {/* Country, State, City */}
@@ -371,8 +523,8 @@ const LeadForm = ({ onSuccess, leadData }) => {
             </div>
 
             {/* Website Link */}
-            <div className="mb-3">
-              <label className="form-label fw-bold">Website Link</label>
+            <div className="row mb-3">
+              {/* <label className="form-label fw-bold">Website Link</label>
               <input
                 name="website_link"
                 type="text"
@@ -380,9 +532,35 @@ const LeadForm = ({ onSuccess, leadData }) => {
                 value={formData.website_link}
                 onChange={handleChange}
                 placeholder="Enter website link"
-              />
-            </div>
+              /> */}
 
+
+
+
+              <div className="col-md-6 mb-2">
+                <label className="form-label fw-bold">Website Link</label>
+                <input
+                  name="website_link"
+                  type="text"
+                  className="form-control"
+                  value={formData.website_link || ''}
+                  onChange={handleChange}
+                  placeholder="Enter website link"
+                />
+              </div>
+              <div className="col-md-6 mb-2">
+                <label className="form-label fw-bold">Product</label>
+                <input
+                  name="product"
+                  type="text"
+                  className="form-control"
+                  value={formData.product || ''}
+                  onChange={handleChange}
+                  placeholder="Enter product.."
+                />
+              </div>
+
+            </div>
             {/* Industry Type & Lead Status */}
             <div className="row mb-3">
               <div className="col-md-6 mb-2">
@@ -469,7 +647,7 @@ const LeadForm = ({ onSuccess, leadData }) => {
             </div>
 
             <div className="mb-3">
-              <button type="submit" disabled={isSubmitting} className={`btn w-100 ${isSubmitting ? 'btn-secondary' : 'btn-primary'}, ${leadData ? 'btn-warning':'btn-primary'}`}>
+              <button type="submit" disabled={isSubmitting} className={`btn w-100 ${isSubmitting ? 'btn-secondary' : 'btn-primary'}, ${leadData ? 'btn-warning' : 'btn-primary'}`}>
                 {isSubmitting ? 'Submitting...' : (leadData ? 'Update Lead' : 'Create Lead')}
 
               </button>
@@ -477,6 +655,74 @@ const LeadForm = ({ onSuccess, leadData }) => {
           </form>
         </div>
       </div>
+
+      <Dialog
+        header="Add Customer"
+        visible={openCustomer}
+        maximizable
+        style={{ width: window.innerWidth < 768 ? '95vw' : '30vw' }}
+        onHide={() => setopenCustomer(false)}
+      >
+        <div className="card px-4 w-100 shadow" style={{ maxWidth: '800px' }}>
+          <form onSubmit={handleCustomerSubmit}>
+            <div className="mb-2">
+              <label className="form-label fw-bold">Company Name</label>
+              <input
+                name="company_name"
+                type="text"
+                className="form-control"
+                value={customerformData.company_name || ''}
+                onChange={handleChangeCustomerForm}
+                placeholder="Enter company name"
+              />
+            </div>
+
+            <div className="mb-2">
+              <label className="form-label fw-bold">Customer Name*</label>
+              <input
+                name="customer"
+                type="text"
+                className="form-control"
+                value={customerformData.customer || ''}
+                onChange={handleChangeCustomerForm}
+                placeholder="Enter customer name"
+              />
+            </div>
+
+            <div className="mb-2">
+              <label className="form-label fw-bold">Customer Website Link</label>
+              <input
+                name="customer_website_link"
+                type="text"
+                className="form-control"
+                value={customerformData.customer_website_link || ''}
+                onChange={handleChangeCustomerForm}
+                placeholder="Enter website link"
+              />
+            </div>
+
+            <div className="mt-2 mb-2 text-center">
+              {/* <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`btn w-50 ${isSubmitting ? 'btn-secondary' : 'btn-primary'}`}
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit'}
+              </button> */}
+
+              <button
+                type="submit"
+
+                className={`btn w-50 btn-primary`}
+              >
+                submit
+              </button>
+
+            </div>
+          </form>
+        </div>
+      </Dialog>
+
     </>
   );
 };

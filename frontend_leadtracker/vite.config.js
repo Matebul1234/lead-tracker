@@ -11,6 +11,6 @@ export default defineConfig({
   server: {
     port: 3002,
     open: '/',
-    host: '192.168.2.57' 
+    // host: '192.168.2.57' 
   },
 })

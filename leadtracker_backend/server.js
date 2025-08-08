@@ -6,6 +6,7 @@ import userRouter from "./Routers/user.router.js";
 import leadRouter from "./Routers/lead.router.js";
 
 import cookieParser from 'cookie-parser';
+import customerRouter from "./Routers/customer.router.js";
 
 const app = express();
 
@@ -33,9 +34,7 @@ app.use(cors({
 // ✅ Routes
 app.use("/api/user", userRouter);
 app.use("/api/lead", leadRouter);
-app.get("/demo", (req, res) => {
-  res.send("from backend side");
-});
+app.use("/api/customer", customerRouter);
 
 // ✅ Port setup
 const PORT = process.env.PORT || 5000;

@@ -10,11 +10,11 @@ const Sidebar = ({ showSidebar }) => {
       <Link to="/dashboard" className="d-flex align-items-center gap-2 p-2">
         <LayoutDashboard size={25} /> Dashboard
       </Link>
-      <Link to="/total-leads" className="d-flex align-items-center gap-2 p-2">
+      <Link to="/leads" className="d-flex align-items-center gap-2 p-2">
         <Users size={25} /> Lead
       </Link>
-      <Link to="" className="d-flex align-items-center gap-2 p-2">
-        <Handshake size={25} /> Deals
+      <Link to="/ns3tech/quotation" className="d-flex align-items-center gap-2 p-2">
+        <Handshake size={25} /> Quotation
       </Link>
       <Link to="" className="d-flex align-items-center gap-2 p-2">
         <BarChart2 size={25} /> Reports

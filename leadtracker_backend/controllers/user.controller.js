@@ -57,7 +57,7 @@ export const userRegister = async (req, res) => {
 
 // user login
 export const userLogin = async (req, res) => {
-    console.log("📥 Incoming login request:", req.body);
+    // console.log("📥 Incoming login request:", req.body);
 
     try {
         const { email, password } = req.body;
@@ -71,7 +71,7 @@ export const userLogin = async (req, res) => {
             });
         }
 
-        console.log("🔍 Checking user in database...");
+        // console.log("🔍 Checking user in database...");
 
         // 🔍 Look up the user by email
         const [users] = await connection.execute(
@@ -101,13 +101,13 @@ export const userLogin = async (req, res) => {
             });
         }
 
-        console.log("✅ Password valid. Generating tokens...");
+        // console.log("✅ Password valid. Generating tokens...");
 
         // 🔑 Generate tokens
         const accessToken = await generatedAccessToken(user.id);
         const refreshToken = await generatedRefreshToken(user.id); // Ensure this function name is correct
 
-        console.log("🎟️ Tokens generated:", { accessToken, refreshToken });
+        // console.log("🎟️ Tokens generated:", { accessToken, refreshToken });
 
         // 🕓 Update last login time
         await connection.execute(
@@ -117,7 +117,7 @@ export const userLogin = async (req, res) => {
 
         // 🌐 Determine environment
         const isProduction = process.env.IS_PRODUCTION === 'true';
-        console.log("🌍 Environment:", isProduction ? "Production" : "Development");
+        // console.log("🌍 Environment:", isProduction ? "Production" : "Development");
 
         // 🍪 Set secure cookies
         const cookieOptions = {
