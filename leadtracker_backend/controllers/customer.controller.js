@@ -134,9 +134,6 @@ export const addcustomer = async (req, res) => {
 
 
 
-
-
-
 export const getAllCustomer = async (req, res, next) => {
  try {
   const pool = await connection.getConnection();

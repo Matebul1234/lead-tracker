@@ -326,7 +326,7 @@ export default function UserLeadsTable() {
                 globalFilterFields={[
                   'name',
                   'email',
-                  'company_name',
+                  'customer',
                   'lead_owner',
                   'industry_type',
                   'country',
@@ -347,7 +347,7 @@ export default function UserLeadsTable() {
                 <Column field="name" header="Name" sortable style={{ minWidth: '12rem' }} />
                 <Column field="email" header="Email" sortable style={{ minWidth: '12rem' }} />
                 <Column field="phone" header="Phone" sortable style={{ minWidth: '10rem' }} />
-                <Column field="company_name" header="Company" sortable style={{ minWidth: '14rem' }} />
+                <Column field="customer" header="Customer" sortable style={{ minWidth: '14rem' }} />
                 <Column field="industry_type" header="Industry" sortable style={{ minWidth: '12rem' }} />
                 <Column field="country" header="Country" sortable style={{ minWidth: '10rem' }} />
                 <Column field="state" header="State" sortable style={{ minWidth: '10rem' }} />
