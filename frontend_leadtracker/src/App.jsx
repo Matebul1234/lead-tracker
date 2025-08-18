@@ -25,6 +25,7 @@ function App() {
     <BrowserRouter>
       <ScrollToTop />
       <Navbar />
+     
       {/* Main content area */}
       <div className="flex flex-col justify-content-center">
         <div className="flex-grow" style={{marginTop:"84px"}}>
